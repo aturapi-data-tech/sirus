@@ -1,11 +1,26 @@
-import './bootstrap';
+// import './bootstrap.js';
 
-// app.js
+// // app.js
 
-import {createApp} from 'vue'
-import 'flowbite';
+// import {createApp} from 'vue'
+// import 'flowbite';
+// import App from './App.vue'
+
+// createApp(App).mount("#app")
 
 
-import App from './App.vue'
 
-createApp(App).mount("#app")
+import { createApp, h } from 'vue'
+import { createInertiaApp } from '@inertiajs/vue3'
+
+createInertiaApp({
+  resolve: name => {
+    const pages = import.meta.glob('./Pages/**/*.vue', { eager: true })
+    return pages[`./Pages/${name}.vue`]
+  },
+  setup({ el, App, props, plugin }) {
+    createApp({ render: () => h(App, props) })
+      .use(plugin)
+      .mount(el)
+  },
+})
